@@ -1,0 +1,22 @@
+DECLARE
+    CURSOR emp_cursor IS
+        SELECT SAL FROM EMP WHERE DEPTNO = 20;
+    sal_sum NUMBER := 0;
+    emp_count NUMBER := 0;
+    sal_value EMP.SAL%TYPE;
+BEGIN
+    OPEN emp_cursor;
+    LOOP
+        FETCH emp_cursor INTO sal_value;
+        EXIT WHEN emp_cursor%NOTFOUND;
+        sal_sum := sal_sum + sal_value;
+        emp_count := emp_count + 1;
+    END LOOP;
+    CLOSE emp_cursor;
+
+    IF emp_count > 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Average Salary in Dept 20: ' || (sal_sum / emp_count));
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('No employees in Department 20.');
+    END IF;
+END;
